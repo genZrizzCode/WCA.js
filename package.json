@@ -1,8 +1,9 @@
 {
-  "name": "wcajs",
+  "name": "wca.js",
   "version": "0.9.0",
   "description": "WCA command-line tools",
   "type": "module",
+  "main": "./src/cli.js",
   "bin": {
     "wca": "./bin/wca.js"
   },
