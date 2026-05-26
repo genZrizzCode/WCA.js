@@ -1,9 +1,16 @@
-# wcajs
+# wcasearch.js
+
+## Install (global)
+
+```bash
+npm install -g wcasearch.js
+```
 
 ## Install (dev)
 
 ```bash
 npm i
+npm link
 ```
 
 ## Usage
