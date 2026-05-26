@@ -26,8 +26,12 @@ wca nearby --place "Beijing" --radius-km 1000 --limit 200 --max-pages 50
 wca nearby --place "Beijing" --radius-km 1000 --limit 200 --max-pages 50 --all-at-once
 wca nearby --place "Beijing" --radius-km 1000 --limit 200 --live 60
 wca nearby --place "Beijing" --radius-km 1000 --limit 200 --live
+wca nearby --place "Beijing" --radius-km 1000 --limit 200 --live 60 --debug
+wca nearby --place "Beijing" --radius-km 1000 --limit 200 --live 60 --debug ./my-run.log
 wca live --place "Beijing" --radius-km 1000 --minutes 60
 ```
+
+Example of a log: [example.log](./example.log)
 
 Notes:
 - For city/county lookups, this uses Open-Meteo geocoding first, then falls back to Nominatim.
@@ -35,3 +39,4 @@ Notes:
 - For large queries (`--limit >= 200` or `--max-pages >= 50`), it prints `Press ⌃C to exit.` and streams results line-by-line.
 - `--live` polls for new matching competitions and always prints `Press ⌃C to exit.` at the bottom of each poll cycle.
 - `--live` with no duration runs indefinitely only if the CLI can enable OS sleep inhibition (macOS: `caffeinate`, Linux: `systemd-inhibit`, Windows: PowerShell). If not available, it prints instructions and exits.
+- `--debug` writes a debug log. In live mode it updates continuously; otherwise it writes the log when the command finishes.

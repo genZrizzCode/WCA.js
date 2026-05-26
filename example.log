@@ -1,0 +1,100 @@
+[2026-05-26T23:07:31.157Z] place="Beijing"
+[2026-05-26T23:07:31.938Z] resolved.kind=point
+[2026-05-26T23:07:31.938Z] resolved={"kind":"point","name":"Beijing, Beijing Municipality, China","lat":39.9075,"lon":116.39723}
+[2026-05-26T23:07:31.938Z] radiusKm=1000
+[2026-05-26T23:07:31.939Z] today=2026-05-26 limit=200 maxPages=20 allAtOnce=false
+[2026-05-26T23:07:31.939Z] from=null to=null
+[2026-05-26T23:07:31.939Z] live={"forever":false,"minutes":2} pollMinutes=2
+[2026-05-26T23:07:31.939Z] scanOnce begin (initial)
+[2026-05-26T23:07:31.939Z] Fetching page 1: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=1
+[2026-05-26T23:07:33.366Z] Fetched page 1: 25 competitions
+[2026-05-26T23:07:33.366Z] Fetching page 2: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=2
+[2026-05-26T23:07:34.396Z] Fetched page 2: 25 competitions
+[2026-05-26T23:07:34.396Z] Fetching page 3: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=3
+[2026-05-26T23:07:35.627Z] Fetched page 3: 25 competitions
+[2026-05-26T23:07:35.627Z] Fetching page 4: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=4
+[2026-05-26T23:07:37.331Z] Fetched page 4: 25 competitions
+[2026-05-26T23:07:37.332Z] Fetching page 5: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=5
+[2026-05-26T23:07:38.720Z] Fetched page 5: 25 competitions
+[2026-05-26T23:07:38.720Z] Fetching page 6: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=6
+[2026-05-26T23:07:39.707Z] Fetched page 6: 25 competitions
+[2026-05-26T23:07:39.707Z] Fetching page 7: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=7
+[2026-05-26T23:07:40.609Z] Fetched page 7: 25 competitions
+[2026-05-26T23:07:40.637Z] printed id=ShenyangCubingLeague3x3IV2026 name="Shenyang Cubing League 3x3 IV 2026"
+[2026-05-26T23:07:40.637Z] Fetching page 8: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=8
+[2026-05-26T23:07:42.061Z] Fetched page 8: 25 competitions
+[2026-05-26T23:07:42.062Z] printed id=ShenyangCubingLeague3x3III2026 name="Shenyang Cubing League 3x3 III 2026"
+[2026-05-26T23:07:42.062Z] printed id=HefeiCubingLeague3x3IV2026 name="Hefei Cubing League 3x3 IV 2026"
+[2026-05-26T23:07:42.062Z] Fetching page 9: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=9
+[2026-05-26T23:07:43.180Z] Fetched page 9: 25 competitions
+[2026-05-26T23:07:43.180Z] Fetching page 10: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=10
+[2026-05-26T23:07:44.019Z] Fetched page 10: 25 competitions
+[2026-05-26T23:07:44.020Z] printed id=ShenyangCubingLeague3x3II2026 name="Shenyang Cubing League 3x3 II 2026"
+[2026-05-26T23:07:44.020Z] Fetching page 11: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=11
+[2026-05-26T23:07:45.162Z] Fetched page 11: 25 competitions
+[2026-05-26T23:07:45.162Z] Fetching page 12: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=12
+[2026-05-26T23:07:46.087Z] Fetched page 12: 25 competitions
+[2026-05-26T23:07:46.088Z] printed id=ShenyangCubingLeague3x3I2026 name="Shenyang Cubing League 3x3 I 2026"
+[2026-05-26T23:07:46.088Z] printed id=HefeiCubingLeague3x3III2026 name="Hefei Cubing League 3x3 III 2026"
+[2026-05-26T23:07:46.088Z] Fetching page 13: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=13
+[2026-05-26T23:07:47.905Z] Fetched page 13: 25 competitions
+[2026-05-26T23:07:47.905Z] Fetching page 14: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=14
+[2026-05-26T23:07:48.924Z] Fetched page 14: 25 competitions
+[2026-05-26T23:07:48.925Z] Fetching page 15: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=15
+[2026-05-26T23:07:50.087Z] Fetched page 15: 25 competitions
+[2026-05-26T23:07:50.089Z] printed id=HefeiCubingLeague3x3II2026 name="Hefei Cubing League 3x3 II 2026"
+[2026-05-26T23:07:50.089Z] Fetching page 16: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=16
+[2026-05-26T23:07:50.910Z] Fetched page 16: 25 competitions
+[2026-05-26T23:07:50.910Z] Fetching page 17: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=17
+[2026-05-26T23:07:51.675Z] Fetched page 17: 25 competitions
+[2026-05-26T23:07:51.675Z] Fetching page 18: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=18
+[2026-05-26T23:07:52.510Z] Fetched page 18: 25 competitions
+[2026-05-26T23:07:52.510Z] Fetching page 19: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=19
+[2026-05-26T23:07:53.562Z] Fetched page 19: 25 competitions
+[2026-05-26T23:07:53.562Z] Fetching page 20: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=20
+[2026-05-26T23:07:54.359Z] Fetched page 20: 25 competitions
+[2026-05-26T23:07:54.359Z] scanOnce end (initial) canContinue=true
+[2026-05-26T23:07:54.359Z] live loop begin
+[2026-05-26T23:09:54.359Z] scanOnce begin (poll)
+[2026-05-26T23:09:54.359Z] Fetching page 1: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=1
+[2026-05-26T23:09:55.707Z] Fetched page 1: 25 competitions
+[2026-05-26T23:09:55.707Z] Fetching page 2: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=2
+[2026-05-26T23:09:57.129Z] Fetched page 2: 25 competitions
+[2026-05-26T23:09:57.129Z] Fetching page 3: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=3
+[2026-05-26T23:09:58.597Z] Fetched page 3: 25 competitions
+[2026-05-26T23:09:58.597Z] Fetching page 4: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=4
+[2026-05-26T23:10:00.025Z] Fetched page 4: 25 competitions
+[2026-05-26T23:10:00.025Z] Fetching page 5: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=5
+[2026-05-26T23:10:00.930Z] Fetched page 5: 25 competitions
+[2026-05-26T23:10:00.930Z] Fetching page 6: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=6
+[2026-05-26T23:10:01.844Z] Fetched page 6: 25 competitions
+[2026-05-26T23:10:01.844Z] Fetching page 7: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=7
+[2026-05-26T23:10:02.656Z] Fetched page 7: 25 competitions
+[2026-05-26T23:10:02.657Z] Fetching page 8: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=8
+[2026-05-26T23:10:04.545Z] Fetched page 8: 25 competitions
+[2026-05-26T23:10:04.546Z] Fetching page 9: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=9
+[2026-05-26T23:10:06.142Z] Fetched page 9: 25 competitions
+[2026-05-26T23:10:06.142Z] Fetching page 10: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=10
+[2026-05-26T23:10:07.087Z] Fetched page 10: 25 competitions
+[2026-05-26T23:10:07.088Z] Fetching page 11: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=11
+[2026-05-26T23:10:08.244Z] Fetched page 11: 25 competitions
+[2026-05-26T23:10:08.244Z] Fetching page 12: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=12
+[2026-05-26T23:10:09.140Z] Fetched page 12: 25 competitions
+[2026-05-26T23:10:09.140Z] Fetching page 13: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=13
+[2026-05-26T23:10:10.546Z] Fetched page 13: 25 competitions
+[2026-05-26T23:10:10.546Z] Fetching page 14: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=14
+[2026-05-26T23:10:11.326Z] Fetched page 14: 25 competitions
+[2026-05-26T23:10:11.326Z] Fetching page 15: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=15
+[2026-05-26T23:10:12.386Z] Fetched page 15: 25 competitions
+[2026-05-26T23:10:12.386Z] Fetching page 16: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=16
+[2026-05-26T23:10:13.412Z] Fetched page 16: 25 competitions
+[2026-05-26T23:10:13.412Z] Fetching page 17: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=17
+[2026-05-26T23:10:14.490Z] Fetched page 17: 25 competitions
+[2026-05-26T23:10:14.490Z] Fetching page 18: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=18
+[2026-05-26T23:10:15.600Z] Fetched page 18: 25 competitions
+[2026-05-26T23:10:15.601Z] Fetching page 19: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=19
+[2026-05-26T23:10:16.586Z] Fetched page 19: 25 competitions
+[2026-05-26T23:10:16.586Z] Fetching page 20: https://www.worldcubeassociation.org/api/v0/competitions?ongoing_and_upcoming=true&page=20
+[2026-05-26T23:10:17.774Z] Fetched page 20: 25 competitions
+[2026-05-26T23:10:17.774Z] scanOnce end (poll) ok=true
+[2026-05-26T23:10:17.774Z] done

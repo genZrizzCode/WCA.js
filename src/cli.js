@@ -1,6 +1,9 @@
 import { Command } from "commander";
 import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import { createWriteStream } from "node:fs";
+import { writeFile } from "node:fs/promises";
+import path from "node:path";
 import { iterateCompetitionsOngoingAndUpcoming } from "./wcaApi.js";
 import { resolvePlace } from "./place.js";
 import { formatCompetition, withinRadiusKm } from "./util.js";
@@ -70,9 +73,63 @@ function createCompetitionMatcher({ resolved, radiusKm, from, to, today }) {
   };
 }
 
+function defaultDebugPath() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(
+    d.getMinutes(),
+  )}${pad(d.getSeconds())}`;
+  return path.resolve(process.cwd(), `wca-debug-${stamp}.log`);
+}
+
+function createDebugLogger({ enabled, live, filePath }) {
+  if (!enabled) {
+    return {
+      filePath: null,
+      log() {},
+      async flush() {},
+      close() {},
+    };
+  }
+
+  const resolvedPath = filePath ? path.resolve(process.cwd(), String(filePath)) : defaultDebugPath();
+  const prefix = () => new Date().toISOString();
+
+  if (live) {
+    const stream = createWriteStream(resolvedPath, { flags: "a" });
+    return {
+      filePath: resolvedPath,
+      log(message) {
+        stream.write(`[${prefix()}] ${message}\n`);
+      },
+      async flush() {},
+      close() {
+        stream.end();
+      },
+    };
+  }
+
+  const lines = [];
+  return {
+    filePath: resolvedPath,
+    log(message) {
+      lines.push(`[${prefix()}] ${message}`);
+    },
+    async flush() {
+      await writeFile(resolvedPath, `${lines.join("\n")}\n`, "utf8");
+    },
+    close() {},
+  };
+}
+
 async function handleNearby(options) {
   const prompt = createPrompt();
+  const liveCfg = parseLiveMinutes(options.live);
+  const liveMode = Boolean(liveCfg);
+  const debug = createDebugLogger({ enabled: Boolean(options.debug), live: liveMode, filePath: options.debugFile });
   try {
+    if (debug.filePath) console.error(`Debug log: ${debug.filePath}`);
+
     const bigQueryRequested =
       (options.limit != null && options.limit >= 200) || (options.maxPages != null && options.maxPages >= 50);
     const shouldPrintCtrlC = bigQueryRequested && process.stdin.isTTY;
@@ -80,8 +137,11 @@ async function handleNearby(options) {
 
     const placeRaw = options.place ?? (await prompt.ask("City/county, country, or continent: "));
     if (!placeRaw) throw new Error("Place is required.");
+    debug.log(`place=${JSON.stringify(placeRaw)}`);
 
     const resolved = await resolvePlace(placeRaw, { assume: options.assume });
+    debug.log(`resolved.kind=${resolved.kind}`);
+    debug.log(`resolved=${JSON.stringify(resolved)}`);
 
     let radiusKm = options.radiusKm;
     if (resolved.kind === "point") {
@@ -93,9 +153,12 @@ async function handleNearby(options) {
         throw new Error("Radius must be a positive number (km).");
       }
     }
+    debug.log(`radiusKm=${radiusKm ?? null}`);
 
     const today = new Date().toISOString().slice(0, 10);
     const limit = options.limit ?? 50;
+    debug.log(`today=${today} limit=${limit} maxPages=${options.maxPages ?? 20} allAtOnce=${Boolean(options.allAtOnce)}`);
+    debug.log(`from=${options.from ?? null} to=${options.to ?? null}`);
     const matches = createCompetitionMatcher({
       resolved,
       radiusKm,
@@ -104,10 +167,7 @@ async function handleNearby(options) {
       today,
     });
 
-    const liveCfg = parseLiveMinutes(options.live);
-
     // In live mode, always stream (all-at-once is ignored).
-    const liveMode = Boolean(liveCfg);
     const collected = !liveMode && options.allAtOnce ? [] : null;
     let printed = 0;
     let matchedAny = false;
@@ -118,10 +178,11 @@ async function handleNearby(options) {
     const pollMinutes = options.pollMinutes ?? 2;
     if (!Number.isFinite(pollMinutes) || pollMinutes <= 0) throw new Error("--poll-minutes must be a positive number");
     const pollIntervalMs = pollMinutes * 60_000;
+    debug.log(`live=${liveCfg ? JSON.stringify(liveCfg) : null} pollMinutes=${pollMinutes}`);
 
     try {
       const scanOnce = async () => {
-        for await (const page of iterateCompetitionsOngoingAndUpcoming({ maxPages: options.maxPages })) {
+        for await (const page of iterateCompetitionsOngoingAndUpcoming({ maxPages: options.maxPages, log: debug.log })) {
           for (const competition of page) {
             if (!matches(competition)) continue;
             if (seenIds) {
@@ -133,6 +194,7 @@ async function handleNearby(options) {
               collected.push(competition);
             } else {
               console.log(formatCompetition(competition, { origin: resolved.kind === "point" ? resolved : null }));
+              debug.log(`printed id=${competition.id} name=${JSON.stringify(competition.name)}`);
               printed += 1;
               if (printed >= limit) return false;
             }
@@ -142,24 +204,30 @@ async function handleNearby(options) {
       };
 
       // Initial scan.
+      debug.log("scanOnce begin (initial)");
       const canContinue = await scanOnce();
+      debug.log(`scanOnce end (initial) canContinue=${canContinue}`);
       if (!canContinue) return;
 
       if (liveMode) {
         if (liveCfg.forever) {
+          debug.log("starting sleep inhibitor");
           const started = await startSleepInhibitor();
           if (!started.ok) {
             console.error("Live mode without a duration needs OS sleep inhibition to keep running while the computer would sleep.");
             console.error(`Sleep inhibition is not available automatically here (${started.reason}).`);
             console.error("Re-run with `--live <minutes>` or keep your machine awake via OS settings/tools.");
+            debug.log(`sleep inhibitor unavailable: ${started.reason}`);
             process.exitCode = 1;
             return;
           }
           inhibitor = started;
+          debug.log("sleep inhibitor started");
         }
 
         // Always print at the bottom in live mode.
         console.log("Press ⌃C to exit.");
+        debug.log("live loop begin");
 
         // Poll for new competitions until duration elapses.
         // eslint-disable-next-line no-constant-condition
@@ -167,8 +235,10 @@ async function handleNearby(options) {
           if (endAtMs != null && Date.now() >= endAtMs) return;
           // eslint-disable-next-line no-await-in-loop
           await sleep(pollIntervalMs);
+          debug.log("scanOnce begin (poll)");
           // eslint-disable-next-line no-await-in-loop
           const ok = await scanOnce();
+          debug.log(`scanOnce end (poll) ok=${ok}`);
           if (!ok) return;
           console.log("Press ⌃C to exit.");
         }
@@ -176,10 +246,14 @@ async function handleNearby(options) {
     } catch (err) {
       console.error(err?.message ?? String(err));
       console.error("Try again, or reduce --max-pages.");
+      debug.log(`error=${err?.stack ?? String(err)}`);
       process.exitCode = 1;
       return;
     } finally {
       inhibitor?.stop?.();
+      debug.log("done");
+      await debug.flush();
+      debug.close();
     }
 
     if (collected) {
@@ -239,6 +313,7 @@ export function runCli(argv) {
     .option("--all-at-once", "Collect and print all matches at the end (instead of streaming)")
     .option("--live [minutes]", "Keep polling for new competitions that match the filters (optional duration in minutes)")
     .option("--poll-minutes <minutes>", "Polling interval in minutes (default 2)", (v) => Number.parseFloat(v))
+    .option("--debug [file]", "Write a debug log (optional filepath)")
     .option("--limit <n>", "Max competitions to print (default 50)", (v) => Number.parseInt(v, 10))
     .option("--max-pages <n>", "Max API pages to fetch (default 20)", (v) => Number.parseInt(v, 10))
     .option(
@@ -255,6 +330,8 @@ export function runCli(argv) {
         allAtOnce: Boolean(opts.allAtOnce),
         live: opts.live,
         pollMinutes: opts.pollMinutes,
+        debug: opts.debug != null,
+        debugFile: typeof opts.debug === "string" ? opts.debug : null,
         limit: opts.limit,
         maxPages: opts.maxPages ?? 20,
         assume: opts.assume ? String(opts.assume).toLowerCase() : undefined,
@@ -271,6 +348,7 @@ export function runCli(argv) {
     .option("--radius-km <km>", "Radius in kilometers (for city/county)", (v) => Number.parseFloat(v))
     .option("--minutes <minutes>", "How many minutes to run (required)", (v) => Number.parseFloat(v))
     .option("--poll-minutes <minutes>", "Polling interval in minutes (default 2)", (v) => Number.parseFloat(v))
+    .option("--debug [file]", "Write a debug log (optional filepath)")
     .option("--limit <n>", "Max competitions to print (default 50)", (v) => Number.parseInt(v, 10))
     .option("--max-pages <n>", "Max API pages to fetch (default 20)", (v) => Number.parseInt(v, 10))
     .option(
@@ -292,6 +370,8 @@ export function runCli(argv) {
         allAtOnce: false,
         live: String(opts.minutes),
         pollMinutes: opts.pollMinutes,
+        debug: opts.debug != null,
+        debugFile: typeof opts.debug === "string" ? opts.debug : null,
         limit: opts.limit,
         maxPages: opts.maxPages ?? 20,
         assume: opts.assume ? String(opts.assume).toLowerCase() : undefined,

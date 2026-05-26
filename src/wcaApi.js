@@ -13,7 +13,7 @@ function parseLinkHeader(linkHeader) {
   return out;
 }
 
-async function fetchJson(url) {
+async function fetchJson(url, { log } = {}) {
   const headers = {
     accept: "application/json",
     "user-agent": "wcajs-cli/0.1",
@@ -35,6 +35,7 @@ async function fetchJson(url) {
       throw new Error(`WCA API request failed: ${res.status} ${res.statusText} (${url})`);
     }
 
+    log?.(`WCA API ${res.status} ${res.statusText}; retrying (attempt ${attempt}/${maxAttempts})`);
     const retryAfter = res.headers.get("retry-after");
     const retryAfterMs = retryAfter ? Number.parseFloat(retryAfter) * 1000 : null;
     const backoffMs = 500 * 2 ** (attempt - 1);
@@ -54,16 +55,18 @@ export async function fetchCompetitionsOngoingAndUpcoming({ maxPages = 20 } = {}
   return all;
 }
 
-export async function* iterateCompetitionsOngoingAndUpcoming({ maxPages = 20 } = {}) {
+export async function* iterateCompetitionsOngoingAndUpcoming({ maxPages = 20, log } = {}) {
   let url = `${BASE}/competitions?ongoing_and_upcoming=true&page=1`;
   for (let page = 1; page <= maxPages && url; page++) {
     if (page === 1) {
       // eslint-disable-next-line no-console
       console.error(`Fetching WCA competitions (up to ${maxPages} pages)...`);
     }
+    log?.(`Fetching page ${page}: ${url}`);
     // eslint-disable-next-line no-await-in-loop
-    const { data, links } = await fetchJson(url);
+    const { data, links } = await fetchJson(url, { log });
     if (!Array.isArray(data) || data.length === 0) return;
+    log?.(`Fetched page ${page}: ${data.length} competitions`);
     yield data;
     url = links.next ?? null;
   }
