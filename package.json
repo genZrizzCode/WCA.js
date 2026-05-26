@@ -1,0 +1,16 @@
+{
+  "name": "wcajs",
+  "version": "0.1.0",
+  "description": "WCA command-line tools",
+  "type": "module",
+  "bin": {
+    "wca": "./bin/wca.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "commander": "^13.0.0",
+    "i18n-iso-countries": "^7.14.0"
+  }
+}
