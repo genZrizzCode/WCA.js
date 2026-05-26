@@ -2,6 +2,24 @@
   "name": "wca.js",
   "version": "0.9.0",
   "description": "WCA command-line tools",
+  "keywords": [
+    "wca",
+    "cubing",
+    "cli",
+    "commander",
+    "commanderjs",
+    "worldcubeassociation"
+  ],
+  "homepage": "https://github.com/genZrizzCode/WCA.js#readme",
+  "bugs": {
+    "url": "https://github.com/genZrizzCode/WCA.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genZrizzCode/WCA.js.git"
+  },
+  "license": "MIT",
+  "author": "MaSoVaX",
   "type": "module",
   "main": "./src/cli.js",
   "bin": {
@@ -13,5 +31,6 @@
   "dependencies": {
     "commander": "^13.0.0",
     "i18n-iso-countries": "^7.14.0"
-  }
+  },
+  "devDependencies": {}
 }
